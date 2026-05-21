@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -33,6 +34,11 @@ def parse_place(value: str) -> int | None:
     return int(digits) if digits else None
 
 
+def parse_first_int(value: str) -> int | None:
+    match = re.search(r"\d+", value)
+    return int(match.group(0)) if match else None
+
+
 def parse_results(html: str) -> dict[str, list[dict[str, str | int]]]:
     soup = BeautifulSoup(html, "html.parser")
     results: dict[str, list[dict[str, str | int]]] = {year: [] for year in YEARS}
@@ -51,17 +57,22 @@ def parse_results(html: str) -> dict[str, list[dict[str, str | int]]]:
             continue
 
         for row in node.find_all("tr"):
-            cells = row.find_all(["td", "th"])
-            values = [cell.get_text(" ", strip=True) for cell in cells]
+            cells = row.find_all("td")
+            pairs = [
+                (cell, cell.get_text(" ", strip=True))
+                for cell in cells
+                if cell.get_text(" ", strip=True)
+            ]
 
-            if len(values) < 4 or values[0].lower() == "place":
+            if len(pairs) < 4:
                 continue
 
-            place = parse_place(values[0])
+            place = parse_first_int(pairs[0][1])
             if place is None or place > MAX_PLACE:
                 continue
 
-            event_link = cells[1].find("a", href=True)
+            event_cell = pairs[1][0]
+            event_link = event_cell.find("a", href=True) if event_cell else None
             event_url = ""
             if event_link:
                 href = event_link["href"]
@@ -70,9 +81,9 @@ def parse_results(html: str) -> dict[str, list[dict[str, str | int]]]:
             results[current_year].append(
                 {
                     "place": place,
-                    "event": values[1],
-                    "ctfPoints": values[2],
-                    "ratingPoints": values[3],
+                    "event": pairs[1][1],
+                    "ctfPoints": pairs[2][1],
+                    "ratingPoints": pairs[3][1],
                     "url": event_url,
                 },
             )
@@ -89,17 +100,27 @@ def parse_rankings(html: str) -> dict[str, int | None]:
     lines = [line.strip() for line in text.splitlines() if line.strip()]
     rankings: dict[str, int | None] = {"world": None, "vietnam": None}
 
+    compact_text = " ".join(lines)
+    world_match = re.search(r"Overall\s+rating\s+place:\s*(\d+)", compact_text, re.I)
+    country_match = re.search(r"Country\s+place:\s*(\d+)", compact_text, re.I)
+
+    if world_match:
+        rankings["world"] = int(world_match.group(1))
+
+    if country_match:
+        rankings["vietnam"] = int(country_match.group(1))
+
     for index, line in enumerate(lines):
         lower = line.lower()
         nearby = " ".join(lines[index : index + 3])
 
-        if rankings["world"] is None and "world" in lower and "place" in lower:
-            rankings["world"] = parse_place(nearby)
+        if rankings["world"] is None and "overall" in lower and "place" in lower:
+            rankings["world"] = parse_first_int(nearby)
 
         if rankings["vietnam"] is None and (
             "vietnam" in lower or "viet nam" in lower or "country" in lower
         ):
-            rankings["vietnam"] = parse_place(nearby)
+            rankings["vietnam"] = parse_first_int(nearby)
 
     return rankings
 
