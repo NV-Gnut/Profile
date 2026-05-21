@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Profile học tập, CTF, project và team Lighth0use."
+    />
+    <title>Learning Profile | Lighth0use</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell" id="app-shell">
+      <button class="profile-backdrop" type="button" aria-label="Đóng CV"></button>
+
+      <aside class="profile-card" id="cv-panel" aria-label="CV mini" aria-hidden="true" inert>
+        <button class="profile-close" type="button" aria-label="Đóng CV">×</button>
+        <div class="avatar" aria-hidden="true">
+          <img src="assets/cv-logo.png" alt="" />
+        </div>
+        <p class="role">Cyber Security</p>
+        <h1>Nguyễn Viết Tùng</h1>
+        <p class="bio">
+          ID: Writ3Gnut
+        </p>
+
+        <dl class="profile-stats">
+          <div>
+            <dt></dt>
+            <dd></dd>
+          </div>
+          <div>
+            <dt></dt>
+            <dd></dd>
+          </div>
+          <div>
+            <dt></dt>
+            <dd></dd>
+          </div>
+        </dl>
+
+        <div class="skill-stack" aria-label="Kỹ năng">
+          <span>Web</span>
+          <span>Rev</span>
+          <span>Pwn</span>
+          
+        </div>
+
+        <div class="profile-links">
+          <a href="mailto:your.email@example.com">Email</a>
+          <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </aside>
+
+      <section class="workspace" aria-label="Nội dung profile">
+        <header class="topbar">
+          <button
+            class="profile-toggle"
+            type="button"
+            aria-controls="cv-panel"
+            aria-expanded="false"
+            aria-label="Mở CV cá nhân"
+          >
+            <img src="assets/cv-logo.png" alt="" />
+          </button>
+          <div class="topbar-title">
+            <h2 id="panel-title">Writeups</h2>
+          </div>
+          <nav class="function-nav" aria-label="Chức năng chính">
+            <button class="nav-button active" data-panel="ctf" type="button">
+              Writeups
+            </button>
+            <button class="nav-button" data-panel="projects" type="button">
+              project
+            </button>
+            <button class="nav-button" data-panel="team" type="button">
+              our team
+            </button>
+          </nav>
+        </header>
+
+        <div class="panel-frame">
+          <section
+            class="content-panel writeups-panel active"
+            data-panel-content="ctf"
+            aria-labelledby="ctf-title"
+          >
+            <div class="writeups-header">
+              <div>
+                <p class="eyebrow">CTF archive</p>
+                <h3 id="ctf-title">Writeups</h3>
+              </div>
+              <div
+                class="tournament-filter"
+                id="tournament-filter"
+                aria-label="Lọc theo giải đấu"
+              ></div>
+            </div>
+
+            <div class="writeup-grid" id="writeup-grid" aria-live="polite"></div>
+          </section>
+
+          <section
+            class="content-panel"
+            data-panel-content="projects"
+            aria-labelledby="projects-title"
+            hidden
+          >
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Build / Experiment</p>
+                <h3 id="projects-title">Project</h3>
+              </div>
+              <a class="ghost-link" href="https://github.com/" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+            </div>
+
+            <div class="project-list" id="project-list"></div>
+          </section>
+
+          <section
+            class="content-panel"
+            data-panel-content="team"
+            aria-labelledby="team-title"
+            hidden
+          >
+            <div class="team-layout">
+              <div class="team-identity">
+                <div class="team-title-row">
+                  <img
+                    class="team-logo"
+                    src="assets/671628765_122104270838848129_4765809132545529774_n.jpg"
+                    alt="Lighth0use logo"
+                  />
+                  <h3 id="team-title">Lighth0use</h3>
+                </div>
+                <div class="team-description-box">
+                  <strong>Strong</strong>
+                </div>
+                <p class="team-quote">Hãy cố gắng vì một ngày tốt đẹp</p>
+              </div>
+
+              <aside class="team-achievements" aria-labelledby="achievements-title">
+                <div class="achievement-heading">
+                  <div>
+                    <p class="eyebrow">CTFtime</p>
+                    <h4 id="achievements-title">Ranking board</h4>
+                  </div>
+                  <a href="https://ctftime.org/team/410831" target="_blank" rel="noreferrer">
+                    team/410831
+                  </a>
+                </div>
+
+                <div class="rank-cards">
+                  <div>
+                    <span>World</span>
+                    <strong id="rank-world">--</strong>
+                  </div>
+                  <div>
+                    <span>Vietnam</span>
+                    <strong id="rank-vietnam">--</strong>
+                  </div>
+                </div>
+
+                <div class="achievement-tabs" aria-label="Achievement years">
+                  <button class="achievement-tab active" data-achievement-year="2026" type="button">
+                    2026
+                  </button>
+                  <button class="achievement-tab" data-achievement-year="2025" type="button">
+                    2025
+                  </button>
+                </div>
+
+                <div class="achievement-table-wrap">
+                  <table class="achievement-table">
+                    <thead>
+                      <tr>
+                        <th>Place</th>
+                        <th>Event</th>
+                        <th>Rating</th>
+                      </tr>
+                    </thead>
+                    <tbody id="achievement-rows">
+                      <tr>
+                        <td colspan="3">Loading CTFtime results...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="achievement-note" id="achievement-updated"></p>
+              </aside>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

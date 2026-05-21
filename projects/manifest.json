@@ -1,0 +1,9 @@
+[
+  {
+    "type": "Security tool",
+    "title": "Recon Notes CLI",
+    "description": "Công cụ dòng lệnh lưu checklist recon, endpoint đáng chú ý và payload đã thử.",
+    "tags": ["Python", "SQLite", "CLI"],
+    "url": ""
+  }
+]

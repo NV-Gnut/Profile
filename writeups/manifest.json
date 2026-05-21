@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Secure note",
+    "event": "Bkisc-CTF 2026",
+    "eventKey": "bkisc",
+    "category": "Web",
+    "date": "2026-05-12",
+    "src": "writeups/Bkisc-CTF 2026/Secure note/README.md"
+  },
+  {
+    "title": "REV",
+    "event": "DDC CTF",
+    "eventKey": "ddc",
+    "category": "Rev",
+    "date": "2025-08-25",
+    "src": "writeups/DDC CTF/REV/writeup.md"
+  },
+  {
+    "title": "echo ponch",
+    "event": "0xV10D-CTF 2026",
+    "eventKey": "0xv10d",
+    "category": "Web",
+    "date": "2026-05-19",
+    "src": "writeups/0xV10D-CTF 2026/echo ponch/writeup.md"
+  },
+  {
+    "title": "Neon Mirage",
+    "event": "0xV10D-CTF 2026",
+    "eventKey": "0xv10d",
+    "category": "Web",
+    "date": "2026-05-19",
+    "src": "writeups/0xV10D-CTF 2026/Neon Mirage/writeup.md"
+  },
+  {
+    "title": "Silent Oracle",
+    "event": "0xV10D-CTF 2026",
+    "eventKey": "0xv10d",
+    "category": "Web",
+    "date": "2026-05-19",
+    "src": "writeups/0xV10D-CTF 2026/Silent Oracle/writeup.md"
+  },
+  {
+    "title": "The Altered Grimoire",
+    "event": "0xV10D-CTF 2026",
+    "eventKey": "0xv10d",
+    "category": "Web",
+    "date": "2026-05-19",
+    "src": "writeups/0xV10D-CTF 2026/The Altered Grimoire/writeup.md"
+  }
+]

