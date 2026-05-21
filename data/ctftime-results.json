@@ -1,13 +1,96 @@
 {
   "teamId": 410831,
   "teamUrl": "https://ctftime.org/team/410831",
+<<<<<<< HEAD
   "updatedAt": "2026-05-21T01:23:58.221917+00:00",
+=======
+  "updatedAt": "2026-05-21T01:49:01.756623+00:00",
+>>>>>>> 80005bf (test lần 4)
   "rankings": {
     "world": 299,
     "vietnam": 24
   },
   "years": {
-    "2026": [],
-    "2025": []
+    "2026": [
+      {
+        "place": 16,
+        "event": "JerseyCTF VI",
+        "ctfPoints": "23021.0000",
+        "ratingPoints": "32.062",
+        "url": "https://ctftime.org/event/3117"
+      },
+      {
+        "place": 21,
+        "event": "0xV01D CTF 2026",
+        "ctfPoints": "6483.0000",
+        "ratingPoints": "0.000 *",
+        "url": "https://ctftime.org/event/3269"
+      },
+      {
+        "place": 29,
+        "event": "BKISC CTF 2026",
+        "ctfPoints": "2851.0000",
+        "ratingPoints": "6.279",
+        "url": "https://ctftime.org/event/2927"
+      },
+      {
+        "place": 115,
+        "event": "TexSAW 2026",
+        "ctfPoints": "1601.0000",
+        "ratingPoints": "12.654",
+        "url": "https://ctftime.org/event/3130"
+      },
+      {
+        "place": 135,
+        "event": "TJCTF 2026",
+        "ctfPoints": "7123.0000",
+        "ratingPoints": "30.599",
+        "url": "https://ctftime.org/event/3195"
+      },
+      {
+        "place": 136,
+        "event": "UTCTF 2026",
+        "ctfPoints": "5622.0000",
+        "ratingPoints": "30.334",
+        "url": "https://ctftime.org/event/3133"
+      },
+      {
+        "place": 149,
+        "event": "Kashi CTF 2026",
+        "ctfPoints": "1500.0000",
+        "ratingPoints": "4.480",
+        "url": "https://ctftime.org/event/3150"
+      }
+    ],
+    "2025": [
+      {
+        "place": 15,
+        "event": "WannaGame Championship 2025",
+        "ctfPoints": "6268.0000",
+        "ratingPoints": "10.391",
+        "url": "https://ctftime.org/event/2898"
+      },
+      {
+        "place": 112,
+        "event": "V1t CTF 2025",
+        "ctfPoints": "2840.0000",
+        "ratingPoints": "6.981",
+        "url": "https://ctftime.org/event/2920"
+      },
+      {
+        "place": 120,
+        "event": "Platypwn 2025",
+        "ctfPoints": "400.0000",
+        "ratingPoints": "1.199",
+        "url": "https://ctftime.org/event/2606"
+      },
+      {
+        "place": 134,
+        "event": "PwnSec CTF 2025",
+        "ctfPoints": "400.0000",
+        "ratingPoints": "1.182",
+        "url": "https://ctftime.org/event/2906"
+      }
+    ]
   }
 }
