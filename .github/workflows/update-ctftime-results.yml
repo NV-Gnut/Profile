@@ -2,6 +2,13 @@ name: Update CTFtime results
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/update-ctftime-results.yml"
+      - "scripts/update_ctftime_results.py"
+      - "data/ctftime-results.json"
   schedule:
     - cron: "25 0 * * *"
 
