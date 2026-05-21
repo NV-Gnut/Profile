@@ -8,14 +8,6 @@
     "src": "writeups/Bkisc-CTF 2026/Secure note/README.md"
   },
   {
-    "title": "REV",
-    "event": "DDC CTF",
-    "eventKey": "ddc",
-    "category": "Rev",
-    "date": "2025-08-25",
-    "src": "writeups/DDC CTF/REV/writeup.md"
-  },
-  {
     "title": "echo ponch",
     "event": "0xV10D-CTF 2026",
     "eventKey": "0xv10d",
