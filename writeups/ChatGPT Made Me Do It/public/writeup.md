@@ -1,5 +1,5 @@
 # Challeange overview
-Name: CHATGPT MADE ME DO IT\
+Name: CHATGPT MADE ME DO IT
 Author: nigh7c0r3\
 Description: I asked ChatGPT for help, and it... well, you'll see.\
 Object: Khai thác lỗ hổng XSS để khôi phục password ADMIN
