@@ -1,4 +1,4 @@
-# Challeange overview\
+# Challeange overview
 Name: CHATGPT MADE ME DO IT\
 Author: nigh7c0r3\
 Description: I asked ChatGPT for help, and it... well, you'll see.\
@@ -29,7 +29,7 @@ public/
 ```
 Mình sẽ tập trung vào các file: app.js , bot.js , router.js , middleware.js
 
-app.js:\
+app.js:
 APP lấy các PORT, SESSION_SECRET từ file config.js và sử dụng csrfprotection từ file middleware.js . Cookie mà app sử dụng có các thuộc tính quan trọng như httponly:true và samesite:strict => js trên trình duyệt không đọc được cookie và chặn gửi cookie trong request cross-site
 => Qua những thông tin trên mình đoán là khả năng lỗ hổng csrf rất khó xảy ra
 
