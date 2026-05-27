@@ -38,5 +38,13 @@
     "category": "Web",
     "date": "2026-05-19",
     "src": "writeups/0xV10D-CTF 2026/The Altered Grimoire/writeup.md"
+  },
+  {
+    "titile":"ChatGPT Made Me Do It",
+    "event":"KMA-CTF-2026",
+    "eventKey":"KMA",
+    "category":"Web",
+    "date":"2026-5-27",
+    "src":"writeups/ChatGPT Made Me Do It/public/writeup.md"
   }
 ]
