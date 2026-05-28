@@ -16,7 +16,8 @@ mặc dù có SQL injection nhưng service cũng đã filter rất nhiều các 
 Endpoint /upload: chức năng của endpoint này sẽ upload file vào hệ thống lưu ở path /tmp/upload . Nó cũng filter các kí tự thực hiện path traversal như:"\\.\\.", "/", "\\\\", "%2e", "%2f", "%5c", "\u0000", "\\." và sử dụng hàm normalizeFileName(filename) để lấy từng byte trong bảng mã ISO-8859-1 trong tên file AND 127 trở thành dạng ASCII 7 bit. mặc dù vậy nhưng khi để filename là ¯ và ® khi qua hàm normalizeFileName(filename) sẽ được biến đổi thành / và . .Như vậy chúng ta có thể dùng ¯ và ® để thực hiện path traversal để ghi đè file upload vào những nơi nhạy cảm 
 
 Mình đã cố gắng tìm hiểu có thể từ việc upload file để dẫn tới khai thác lấy FLAG bên các dịch vụ eren và internal bot mà không thể. Đến bước này mình đã phải sử dụng phần lớn AI. Theo đó mình biết được một kiểu upload mới là upload file .so thay vì các loại file script phổ biến mà mình biết. Mục đích của việc upload file .so là để cắm vào plugin của mariaDB sau đó khai thác các thông tin cần thiết . Để ghi vào plugin_dir mình cần sử dụng lệnh INSTALL SONAME 'payload.so' trong /search vì nguồn có allowMultiQueries=true . Khi nạp sẽ service sẽ hiện thống báo vì plugin MariaDB không chuẩn nhưng trong file .so có  
-```
+
+```c
 __attribute__((constructor))
 static void init_payload(void) {
     if (fork() != 0) return;
