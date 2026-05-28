@@ -45,6 +45,14 @@
     "eventKey":"KMA",
     "category":"Web",
     "date":"2026-05-27",
-    "src":"writeups/ChatGPT Made Me Do It/public/writeup.md"
+    "src":"writeups/KMA-CTF-2026/ChatGPT Made Me Do It/public/writeup.md"
+  },
+  {
+    "title":"thousandsoflightyears",
+    "event":"KMA-CTF-2026",
+    "eventKey":"KMA",
+    "category":"Web",
+    "date":"2026-05-27",
+    "src":"writeups/KMA-CTF-2026/ChatGPT Made Me Do It/public/writeup.md"
   }
 ]
