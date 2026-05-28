@@ -26,10 +26,9 @@ static void init_payload(void) {
     _exit(0);
 }
 ```
-
 Constructor chạy ngay khi MariaDB load .so
 
-Trong file .so thực hiện các tác vụ sau: gọi curl đến http://eren-app:3000/api/faction/scan (do eren-app và mikasa cùng nằm trên mạng nội bộ, được biết trong file docker-compose.yml) . trong lệnh curl đó sẽ truyền vào query đến DB eren để lấy flag bằng Boolean-Based.  xong đó gửi qua FLAG qua webhook của mình. Xây dựng payload rồi sử dụng /search với ``` aa';install soname 'payload.so';# ```
+Trong file .so thực hiện các tác vụ sau: gọi curl đến http://eren-app:3000/api/faction/scan (do eren-app và mikasa cùng nằm trên mạng nội bộ, được biết trong file docker-compose.yml) . trong lệnh curl đó sẽ truyền vào query đến DB eren để lấy flag bằng Boolean-Based.  xong đó gửi qua FLAG qua webhook của mình. Xây dựng payload rồi sử dụng /search với ` aa';install soname 'payload.so';# `
 
 ```c
 #include <stdio.h>
@@ -207,7 +206,7 @@ static void init_payload(void) {
 
 Để lấy được FLAG1 thì trong payload của mình cần thực hiện những cái sau: FLAG1 sẽ được lưu vào cookie của bot khi bot truy cập vào http://web:3000
 , mình sẽ khai thác lỗ hổng XSS chạy trong browser của bot bằn việc dùng document.cookie để đọc. Lỗ hổng gây ra XSS là hàm innerHTML tại postContent.innerHTML = post.post_content .
-Mình sẽ giải thích về quá trình con Bot thực hiện tác vụ: Bot sẽ nhận một chuỗi comment từ /visit sau đó bot mở http://web:3000 set cookie là flag, bấm nút submit với giá trị comment vừa lấy từ /visit. Nhưng front-end sẽ không gửi lên server luôn mà sẽ gọi WASM để xử lí.Frontend ghi sẵn chuỗi gameInfo vào vùng nhớ CONTENT_CACHE. Sau khi gọi game.wasm với userComment, frontend đọc lại chính vùng nhớ đó và dùng giá trị đọc được làm processed_post_content. Do userComment quá dài có thể ghi đè lên CONTENT_CACHE, mình có thể thay thế được nội dung gameInfo bằng HTML tùy ý. mốc offset tới vùng nhớ đó là 16368 . xây dựng payload rồi sử dụng /search với ``` aa';install soname 'payload.so';# ``` để kích hoạt. Dưới đây là kết quả trả về qua webhook:
+Mình sẽ giải thích về quá trình con Bot thực hiện tác vụ: Bot sẽ nhận một chuỗi comment từ /visit sau đó bot mở http://web:3000 set cookie là flag, bấm nút submit với giá trị comment vừa lấy từ /visit. Nhưng front-end sẽ không gửi lên server luôn mà sẽ gọi WASM để xử lí.Frontend ghi sẵn chuỗi gameInfo vào vùng nhớ CONTENT_CACHE. Sau khi gọi game.wasm với userComment, frontend đọc lại chính vùng nhớ đó và dùng giá trị đọc được làm processed_post_content. Do userComment quá dài có thể ghi đè lên CONTENT_CACHE, mình có thể thay thế được nội dung gameInfo bằng HTML tùy ý. mốc offset tới vùng nhớ đó là 16368 . xây dựng payload rồi sử dụng /search với ` aa';install soname 'payload.so';# ` để kích hoạt. Dưới đây là kết quả trả về qua webhook:
 
 ```c
 #include <stdio.h>
