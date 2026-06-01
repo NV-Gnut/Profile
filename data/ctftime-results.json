@@ -1,10 +1,10 @@
 {
   "teamId": 410831,
   "teamUrl": "https://ctftime.org/team/410831",
-  "updatedAt": "2026-05-31T04:56:39.747119+00:00",
+  "updatedAt": "2026-06-01T05:21:27.659579+00:00",
   "rankings": {
-    "world": 272,
-    "vietnam": 21
+    "world": 254,
+    "vietnam": 20
   },
   "years": {
     "2026": [
@@ -28,6 +28,13 @@
         "ctfPoints": "2851.0000",
         "ratingPoints": "6.279",
         "url": "https://ctftime.org/event/2927"
+      },
+      {
+        "place": 89,
+        "event": "Grey Cat The Flag 2026 Qualifiers",
+        "ctfPoints": "4610.0000",
+        "ratingPoints": "14.371",
+        "url": "https://ctftime.org/event/3178"
       },
       {
         "place": 115,
