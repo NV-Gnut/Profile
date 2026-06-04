@@ -1,7 +1,7 @@
 {
   "teamId": 410831,
   "teamUrl": "https://ctftime.org/team/410831",
-  "updatedAt": "2026-06-03T05:21:26.999017+00:00",
+  "updatedAt": "2026-06-04T05:14:23.634840+00:00",
   "rankings": {
     "world": 264,
     "vietnam": 20
@@ -56,6 +56,13 @@
         "ctfPoints": "5622.0000",
         "ratingPoints": "30.334",
         "url": "https://ctftime.org/event/3133"
+      },
+      {
+        "place": 140,
+        "event": "THEM?!CTF 2026",
+        "ctfPoints": "1200.0000",
+        "ratingPoints": "0.000 *",
+        "url": "https://ctftime.org/event/3209"
       },
       {
         "place": 149,
