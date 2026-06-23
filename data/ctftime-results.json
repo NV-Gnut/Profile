@@ -1,10 +1,10 @@
 {
   "teamId": 410831,
   "teamUrl": "https://ctftime.org/team/410831",
-  "updatedAt": "2026-06-22T05:36:06.962572+00:00",
+  "updatedAt": "2026-06-23T04:34:46.340873+00:00",
   "rankings": {
-    "world": 275,
-    "vietnam": 21
+    "world": 265,
+    "vietnam": 19
   },
   "years": {
     "2026": [
@@ -68,7 +68,7 @@
         "place": 141,
         "event": "boroCTF 2026",
         "ctfPoints": "9000.0000",
-        "ratingPoints": "0.000 *",
+        "ratingPoints": "12.274",
         "url": "https://ctftime.org/event/3309"
       },
       {
