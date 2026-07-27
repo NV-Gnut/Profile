@@ -1,9 +1,9 @@
 {
   "teamId": 410831,
   "teamUrl": "https://ctftime.org/team/410831",
-  "updatedAt": "2026-07-26T04:02:38.824128+00:00",
+  "updatedAt": "2026-07-27T04:09:28.663810+00:00",
   "rankings": {
-    "world": 277,
+    "world": 273,
     "vietnam": 23
   },
   "years": {
@@ -40,7 +40,7 @@
         "place": 79,
         "event": "OmniCTF 2026 Quals",
         "ctfPoints": "1008.0000",
-        "ratingPoints": "0.000 *",
+        "ratingPoints": "8.901",
         "url": "https://ctftime.org/event/3104"
       },
       {
