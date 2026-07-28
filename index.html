@@ -8,7 +8,8 @@
       content="Profile học tập, CTF, project và team Lighth0use."
     />
     <title>Learning Profile | Lighth0use</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/png" href="assets/images/monogram-logo.png" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
   <body>
     <main class="app-shell" id="app-shell">
@@ -17,26 +18,24 @@
       <aside class="profile-card" id="cv-panel" aria-label="CV mini" aria-hidden="true" inert>
         <button class="profile-close" type="button" aria-label="Đóng CV">×</button>
         <div class="avatar" aria-hidden="true">
-          <img src="assets/cv-logo.png" alt="" />
+          <img src="assets/images/avatar.png" alt="" />
         </div>
         <p class="role">Cyber Security</p>
         <h1>Nguyễn Viết Tùng</h1>
-        <p class="bio">
-          ID: Writ3Gnut
-        </p>
+        <p class="bio">Security researcher focused on web exploitation and CTF challenges.</p>
 
         <dl class="profile-stats">
           <div>
-            <dt></dt>
-            <dd></dd>
+            <dt>Writ3Gnut</dt>
+            <dd>Nickname</dd>
           </div>
           <div>
-            <dt></dt>
-            <dd></dd>
+            <dt>Lighth0use</dt>
+            <dd>Team</dd>
           </div>
           <div>
-            <dt></dt>
-            <dd></dd>
+            <dt>Vietnam</dt>
+            <dd>Location</dd>
           </div>
         </dl>
 
@@ -62,25 +61,31 @@
             aria-expanded="false"
             aria-label="Mở CV cá nhân"
           >
-            <img src="assets/cv-logo.png" alt="" />
+            <img src="assets/images/avatar.png" alt="" />
           </button>
           <div class="topbar-title">
+            <span>Writ3Gnut</span>
             <h2 id="panel-title">Writeups</h2>
           </div>
           <nav class="function-nav" aria-label="Chức năng chính">
             <button class="nav-button active" data-panel="ctf" type="button">
-              Writeups
+              <span>Writeups</span>
             </button>
             <button class="nav-button" data-panel="projects" type="button">
-              project
+              <span>Projects</span>
+            </button>
+            <button class="nav-button" data-panel="blogs" type="button">
+              <span>Blogs</span>
             </button>
             <button class="nav-button" data-panel="team" type="button">
-              our team
+              <span>Team</span>
             </button>
           </nav>
         </header>
 
         <div class="panel-frame">
+          <div class="snowfall" id="snowfall" aria-hidden="true"></div>
+
           <section
             class="content-panel writeups-panel active"
             data-panel-content="ctf"
@@ -90,12 +95,31 @@
               <div>
                 <p class="eyebrow">CTF archive</p>
                 <h3 id="ctf-title">Writeups</h3>
+                <p class="panel-summary">
+                  Notes, techniques and solutions collected from security competitions.
+                </p>
               </div>
+              <div class="archive-count" aria-label="Số lượng writeup">
+                <strong id="writeup-count">00</strong>
+                <span>Published<br />solutions</span>
+              </div>
+            </div>
+
+            <div class="writeup-tools">
               <div
                 class="tournament-filter"
                 id="tournament-filter"
                 aria-label="Lọc theo giải đấu"
               ></div>
+              <label class="writeup-search">
+                <span class="sr-only">Tìm theo tên bài hoặc tên giải</span>
+                <input
+                  id="writeup-search"
+                  type="search"
+                  placeholder="Search title or event..."
+                  autocomplete="off"
+                />
+              </label>
             </div>
 
             <div class="writeup-grid" id="writeup-grid" aria-live="polite"></div>
@@ -111,13 +135,30 @@
               <div>
                 <p class="eyebrow">Build / Experiment</p>
                 <h3 id="projects-title">Project</h3>
+                <p class="panel-summary">Tools and experiments built around practical security work.</p>
               </div>
-              <a class="ghost-link" href="https://github.com/" target="_blank" rel="noreferrer">
-                GitHub
-              </a>
             </div>
 
             <div class="project-list" id="project-list"></div>
+          </section>
+
+          <section
+            class="content-panel"
+            data-panel-content="blogs"
+            aria-labelledby="blogs-title"
+            hidden
+          >
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Research / Field notes</p>
+                <h3 id="blogs-title">Blogs</h3>
+                <p class="panel-summary">
+                  Longer-form notes about security research, tooling and learning.
+                </p>
+              </div>
+            </div>
+
+            <div class="blog-grid" id="blog-list"></div>
           </section>
 
           <section
@@ -131,13 +172,14 @@
                 <div class="team-title-row">
                   <img
                     class="team-logo"
-                    src="assets/671628765_122104270838848129_4765809132545529774_n.jpg"
+                    src="assets/images/team-logo.jpg"
                     alt="Lighth0use logo"
                   />
                   <h3 id="team-title">Lighth0use</h3>
                 </div>
                 <div class="team-description-box">
-                  <strong>Strong</strong>
+                  <span>Team focus</span>
+                  <strong>Learn. Break. Build.</strong>
                 </div>
                 <p class="team-quote">Hãy cố gắng vì một ngày tốt đẹp</p>
               </div>
@@ -197,7 +239,7 @@
       </section>
     </main>
 
-    <script src="script.js"></script>
+    <script src="assets/js/app.js"></script>
   </body>
 </html>
 ##

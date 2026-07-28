@@ -8,16 +8,45 @@ const profileBackdrop = document.querySelector(".profile-backdrop");
 const cvPanel = document.querySelector("#cv-panel");
 const filterContainer = document.querySelector("#tournament-filter");
 const writeupGrid = document.querySelector("#writeup-grid");
+const writeupCount = document.querySelector("#writeup-count");
+const writeupSearch = document.querySelector("#writeup-search");
 const projectList = document.querySelector("#project-list");
+const blogList = document.querySelector("#blog-list");
 const achievementRows = document.querySelector("#achievement-rows");
 const achievementTabs = document.querySelectorAll("[data-achievement-year]");
 const achievementUpdated = document.querySelector("#achievement-updated");
 const rankWorld = document.querySelector("#rank-world");
 const rankVietnam = document.querySelector("#rank-vietnam");
+const snowfall = document.querySelector("#snowfall");
+
+if (snowfall) {
+  const snowflakes = Array.from({ length: 52 }, (_, index) => {
+    const flake = document.createElement("span");
+    const position = (index * 37 + 11) % 100;
+    const size = 7 + ((index * 7) % 11);
+    const duration = 7 + ((index * 5) % 8);
+    const delay = -((index * 1.7) % duration);
+    const drift = -45 + ((index * 29) % 90);
+    const opacity = 0.58 + ((index * 13) % 38) / 100;
+
+    flake.className = "snowflake";
+    flake.textContent = index % 3 === 0 ? "❄" : "❅";
+    flake.style.setProperty("--snow-left", `${position}%`);
+    flake.style.setProperty("--snow-size", `${size}px`);
+    flake.style.setProperty("--snow-duration", `${duration}s`);
+    flake.style.setProperty("--snow-delay", `${delay}s`);
+    flake.style.setProperty("--snow-drift", `${drift}px`);
+    flake.style.setProperty("--snow-opacity", opacity);
+    return flake;
+  });
+
+  snowfall.replaceChildren(...snowflakes);
+}
 
 const titles = {
   ctf: "Writeups",
   projects: "Project",
+  blogs: "Blogs",
   team: "Our team",
 };
 
@@ -32,25 +61,82 @@ const setProfileOpen = (isOpen) => {
   cvPanel.inert = !isOpen;
 };
 
+const panelOrder = [...navButtons].map((button) => button.dataset.panel);
+let panelTransitionActive = false;
+
+const finishAnimation = async (animation) => {
+  try {
+    await animation.finished;
+  } catch {
+    // A canceled animation should not block navigation state updates.
+  }
+};
+
+const switchPanel = async (button) => {
+  const panelName = button.dataset.panel;
+  const currentPanel = document.querySelector("[data-panel-content].active");
+  const nextPanel = document.querySelector(`[data-panel-content="${panelName}"]`);
+
+  if (!nextPanel || nextPanel === currentPanel || panelTransitionActive) {
+    return;
+  }
+
+  panelTransitionActive = true;
+  const currentName = currentPanel?.dataset.panelContent;
+  const direction = panelOrder.indexOf(panelName) > panelOrder.indexOf(currentName) ? 1 : -1;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  navButtons.forEach((item) => item.classList.toggle("active", item === button));
+
+  if (panelTitle) {
+    panelTitle.textContent = titles[panelName] || "Learning profile";
+  }
+
+  if (currentPanel && !reduceMotion) {
+    await finishAnimation(
+      currentPanel.animate(
+        [
+          { opacity: 1, transform: "translateX(0)" },
+          { opacity: 0, transform: `translateX(${-direction * 5}rem)` },
+        ],
+        { duration: 180, easing: "cubic-bezier(0.4, 0, 1, 1)" },
+      ),
+    );
+  }
+
+  currentPanel?.classList.remove("active");
+  if (currentPanel) {
+    currentPanel.hidden = true;
+  }
+
+  nextPanel.hidden = false;
+  nextPanel.classList.add("active");
+  nextPanel.scrollTop = 0;
+
+  if (!reduceMotion) {
+    await finishAnimation(
+      nextPanel.animate(
+        [
+          { opacity: 0, transform: `translateX(${direction * 6}rem)` },
+          { opacity: 1, transform: "translateX(0)" },
+        ],
+        { duration: 360, easing: "cubic-bezier(0.16, 1, 0.3, 1)" },
+      ),
+    );
+  }
+
+  panelTransitionActive = false;
+};
+
 navButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const panelName = button.dataset.panel;
-
-    navButtons.forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-
-    panels.forEach((panel) => {
-      const isActive = panel.dataset.panelContent === panelName;
-      panel.hidden = !isActive;
-      panel.classList.toggle("active", isActive);
-    });
-
-    if (panelTitle) {
-      const title = titles[panelName] || "Learning profile";
-      panelTitle.textContent = title;
-    }
-  });
+  button.addEventListener("click", () => switchPanel(button));
 });
+
+const requestedPanel = window.location.hash.slice(1);
+const requestedButton = document.querySelector(`[data-panel="${requestedPanel}"]`);
+if (requestedButton && !requestedButton.classList.contains("active")) {
+  requestedButton.click();
+}
 
 profileToggle?.addEventListener("click", () => {
   const isOpen = appShell?.classList.contains("profile-open") ?? false;
@@ -87,30 +173,65 @@ const categoryClass = (category) => {
   return "web";
 };
 
-const writeupHref = (item) => {
-  const query = new URLSearchParams({
-    src: item.src,
-    title: item.title,
-    event: item.event,
-    category: item.category,
-    date: item.date,
+const articleHref = (item, kind) => {
+  const metaByKind = {
+    writeup: `${item.event} / ${item.category}`,
+    project: `${item.type} / Project`,
+    blog: `${item.category} / Blog`,
+  };
+  const query = new URLSearchParams();
+
+  [
+    ["src", item.src],
+    ["title", item.title],
+    ["kind", kind],
+    ["meta", metaByKind[kind]],
+    ["date", item.date],
+  ].forEach(([key, value]) => {
+    if (value) {
+      query.set(key, value);
+    }
   });
 
-  return `writeup.html?${query.toString()}`;
+  return `article.html?${query.toString()}`;
 };
 
-const renderWriteupCards = (items, filter = "all") => {
+const normalizeSearchText = (value) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+const renderWriteupCards = (items, filter = "all", query = "") => {
   if (!writeupGrid) {
     return;
   }
 
-  const visibleItems =
-    filter === "all" ? items : items.filter((item) => item.eventKey === filter);
+  const normalizedQuery = normalizeSearchText(query.trim());
+  const visibleItems = items.filter((item) => {
+    const matchesFilter = filter === "all" || item.eventKey === filter;
+    const searchableText = normalizeSearchText(`${item.title} ${item.event}`);
+    return matchesFilter && (!normalizedQuery || searchableText.includes(normalizedQuery));
+  });
+
+  if (writeupCount) {
+    writeupCount.textContent = String(visibleItems.length).padStart(2, "0");
+  }
+
+  if (!visibleItems.length) {
+    writeupGrid.innerHTML = `
+      <div class="empty-search">
+        <strong>No matching writeups</strong>
+        <p>Try another title, event name, or filter.</p>
+      </div>
+    `;
+    return;
+  }
 
   writeupGrid.innerHTML = visibleItems
     .map(
       (item) => `
-        <a class="writeup-card" href="${writeupHref(item)}" data-event="${item.eventKey}">
+        <a class="writeup-card" href="${articleHref(item, "writeup")}" data-event="${item.eventKey}">
           <div class="writeup-meta">
             <span class="category ${categoryClass(item.category)}">${item.category}</span>
             <span>${item.event}</span>
@@ -138,17 +259,25 @@ const renderWriteupFilters = (items) => {
     ),
   ].join("");
 
+  let activeFilter = "all";
+
+  const refreshWriteups = () => {
+    renderWriteupCards(items, activeFilter, writeupSearch?.value || "");
+  };
+
   filterContainer.querySelectorAll("[data-event-filter]").forEach((button) => {
     button.addEventListener("click", () => {
-      const filter = button.dataset.eventFilter;
+      activeFilter = button.dataset.eventFilter;
 
       filterContainer
         .querySelectorAll("[data-event-filter]")
         .forEach((item) => item.classList.remove("active"));
       button.classList.add("active");
-      renderWriteupCards(items, filter);
+      refreshWriteups();
     });
   });
+
+  writeupSearch?.addEventListener("input", refreshWriteups);
 };
 
 const loadWriteupManifest = async () => {
@@ -185,26 +314,39 @@ const renderProjects = (items) => {
   }
 
   projectList.innerHTML = items
-    .map(
-      (item) => `
+    .map((item) => {
+      const href = item.src ? articleHref(item, "project") : item.url;
+      const externalAttributes =
+        item.url && !item.src ? ' target="_blank" rel="noreferrer"' : "";
+
+      return `
         <article class="project-item">
           <div>
             <p class="card-kicker">${item.type}</p>
             <h4>
               ${
-                item.url
-                  ? `<a href="${item.url}" target="_blank" rel="noreferrer">${item.title}</a>`
+                href
+                  ? `<a href="${href}"${externalAttributes}>${item.title}</a>`
                   : item.title
               }
             </h4>
             <p>${item.description}</p>
           </div>
-          <div class="tag-list">
-            ${(item.tags || []).map((tag) => `<span>${tag}</span>`).join("")}
+          <div class="project-aside">
+            <div class="tag-list">
+              ${(item.tags || []).map((tag) => `<span>${tag}</span>`).join("")}
+            </div>
+            ${
+              href
+                ? `<a class="project-read" href="${href}"${externalAttributes}>${
+                    item.src ? "Read notes" : "View project"
+                  }</a>`
+                : ""
+            }
           </div>
         </article>
-      `,
-    )
+      `;
+    })
     .join("");
 };
 
@@ -229,6 +371,56 @@ const loadProjectManifest = async () => {
 };
 
 loadProjectManifest();
+
+const renderBlogs = (items) => {
+  if (!blogList) {
+    return;
+  }
+
+  if (!items.length) {
+    blogList.innerHTML = `<p class="load-error">No blog posts yet.</p>`;
+    return;
+  }
+
+  blogList.innerHTML = items
+    .map(
+      (item) => `
+        <a class="blog-card" href="${articleHref(item, "blog")}">
+          <div class="blog-meta">
+            <span>${item.category}</span>
+            <time datetime="${item.date}">${formatDate(item.date)}</time>
+          </div>
+          <h4>${item.title}</h4>
+          <p>${item.description}</p>
+          <div class="tag-list">
+            ${(item.tags || []).map((tag) => `<span>${tag}</span>`).join("")}
+          </div>
+        </a>
+      `,
+    )
+    .join("");
+};
+
+const loadBlogManifest = async () => {
+  if (!blogList) {
+    return;
+  }
+
+  try {
+    const response = await fetch("blogs/manifest.json");
+
+    if (!response.ok) {
+      throw new Error("Cannot load blogs/manifest.json");
+    }
+
+    renderBlogs(await response.json());
+  } catch (error) {
+    blogList.innerHTML = `<p class="load-error">Cannot load blog list.</p>`;
+    console.error(error);
+  }
+};
+
+loadBlogManifest();
 
 const renderAchievements = (data, year = "2026") => {
   if (!achievementRows) {

@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Lỗi bộ nhớ: Những vấn đề ở mức cao",
+    "description": "Ghi chú về quản lý bộ nhớ, stack overflow, integer overflow và các lỗi phổ biến trong khai thác binary.",
+    "category": "Binary Exploitation",
+    "date": "2026-07-22",
+    "tags": ["Pwn", "Memory", "C"],
+    "src": "blogs/Binary Exploitation/readme.md"
+  },
+  {
+    "title": "Building a Practical CTF Workflow",
+    "description": "A repeatable process for preparing a workspace, collecting evidence, and reviewing solutions after a competition.",
+    "category": "Workflow",
+    "date": "2026-07-28",
+    "tags": ["CTF", "Notes", "Tooling"],
+    "src": "blogs/building-a-practical-ctf-workflow/README.md"
+  }
+]

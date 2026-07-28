@@ -1,6 +1,23 @@
 # Learning Profile
 
-Static profile page for CTF write-ups, projects and team information. The layout uses a profile logo that opens a mini CV drawer, tab-style functions on the top right, and a write-up grid with tournament filters.
+Static profile page for CTF write-ups, projects, blogs and team information. Markdown articles share a generated table of contents and enhanced code blocks.
+
+## Project structure
+
+```text
+.
+|-- assets/
+|   |-- css/        # Shared site styles
+|   |-- images/     # Profile and team artwork
+|   `-- js/         # Main page and writeup scripts
+|-- data/           # Generated CTFtime data
+|-- blogs/          # Blog posts and blog manifest
+|-- projects/       # Project manifest and source examples
+|-- scripts/        # Maintenance scripts
+|-- writeups/       # CTF writeups grouped by event
+|-- article.html    # Shared Markdown article reader
+|-- index.html
+```
 
 ## Edit content
 
@@ -10,6 +27,7 @@ Static profile page for CTF write-ups, projects and team information. The layout
 - Edit tournament filter buttons with `data-event-filter`.
 - Put write-up Markdown files in `writeups/`, then add one entry to `writeups/manifest.json`.
 - Add project entries to `projects/manifest.json`.
+- Add blog entries to `blogs/manifest.json`.
 - Edit the team name, copy or SVG logo inside `[data-panel-content="team"]`.
 
 ## Deploy to GitHub Pages
@@ -42,7 +60,7 @@ https://<your-username>.github.io/<repository-name>/
 }
 ```
 
-You do not need to create a separate HTML file or hand-write a card. `script.js` reads `writeups/manifest.json`, renders cards, and creates tournament filters automatically.
+You do not need to create a separate HTML file or hand-write a card. `assets/js/app.js` reads `writeups/manifest.json`, renders cards, and creates tournament filters automatically.
 
 ## Add a project
 
@@ -54,11 +72,30 @@ Add one object to `projects/manifest.json`:
   "title": "My Tool",
   "description": "Short project description.",
   "tags": ["Python", "CLI"],
+  "date": "2026-07-28",
+  "src": "projects/my-tool/README.md",
   "url": "https://github.com/your-username/my-tool"
 }
 ```
 
-Leave `url` as an empty string if the project does not have a public link yet.
+Use `src` to open project notes in the shared article reader. Leave `url` empty if the project does not have a public repository.
+
+## Add a blog
+
+Put the Markdown file in `blogs/`, then add an entry to `blogs/manifest.json`:
+
+```json
+{
+  "title": "My Blog Post",
+  "description": "Short post summary.",
+  "category": "Research",
+  "date": "2026-07-28",
+  "tags": ["Web", "Notes"],
+  "src": "blogs/my-blog-post/README.md"
+}
+```
+
+Headings from `#` through `####` automatically appear in the article table of contents. Fenced code blocks automatically receive a toolbar, line numbers, collapse control, and copy action.
 
 ## CTFtime achievements
 

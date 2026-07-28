@@ -49,4 +49,5 @@ Vì bot không thể share note vì bot không phải owner của note. Vậy n�
 - Attacker: thực hiện share note đó ngay để giá trị `shareTime > lastFreshView`
 - Bot: sau vài giây bot sẽ truy cập lại vào note đó . do trùng URL và có `Cache-Control: no-store` nên trình duyệt Bot phải xác thực bằng việc gửi header `if-none-match` kèm etag. Server sẽ phản hồi `304 not modified`, CSP được cập nhật(nới lỏng) và `conten-type: text/html` được dữ nguyên
 => khi payload trong note được thực thi, chúng ta sẽ lấy được flag
-Flag: ~~BKISC{I_th0ught_I_w4s_s3cur3_but_chr0me_1s_4lw4ys_s0m3thing_n3w_b751dcd092f9}~~
+
+**Flag:** `BKISC{I_th0ught_I_w4s_s3cur3_but_chr0me_1s_4lw4ys_s0m3thing_n3w_b751dcd092f9}`
