@@ -1,10 +1,10 @@
 {
   "teamId": 410831,
   "teamUrl": "https://ctftime.org/team/410831",
-  "updatedAt": "2026-05-28T04:47:10.543133+00:00",
+  "updatedAt": "2026-07-28T03:42:19.318640+00:00",
   "rankings": {
-    "world": 270,
-    "vietnam": 21
+    "world": 273,
+    "vietnam": 23
   },
   "years": {
     "2026": [
@@ -19,8 +19,15 @@
         "place": 21,
         "event": "0xV01D CTF 2026",
         "ctfPoints": "6483.0000",
-        "ratingPoints": "14.304",
+        "ratingPoints": "14.445",
         "url": "https://ctftime.org/event/3269"
+      },
+      {
+        "place": 27,
+        "event": "V1T CTF 2026",
+        "ctfPoints": "5502.0000",
+        "ratingPoints": "11.023",
+        "url": "https://ctftime.org/event/3249"
       },
       {
         "place": 29,
@@ -28,6 +35,20 @@
         "ctfPoints": "2851.0000",
         "ratingPoints": "6.279",
         "url": "https://ctftime.org/event/2927"
+      },
+      {
+        "place": 79,
+        "event": "OmniCTF 2026 Quals",
+        "ctfPoints": "1008.0000",
+        "ratingPoints": "8.901",
+        "url": "https://ctftime.org/event/3104"
+      },
+      {
+        "place": 89,
+        "event": "Grey Cat The Flag 2026 Qualifiers",
+        "ctfPoints": "4610.0000",
+        "ratingPoints": "14.371",
+        "url": "https://ctftime.org/event/3178"
       },
       {
         "place": 115,
@@ -49,6 +70,20 @@
         "ctfPoints": "5622.0000",
         "ratingPoints": "30.334",
         "url": "https://ctftime.org/event/3133"
+      },
+      {
+        "place": 140,
+        "event": "THEM?!CTF 2026",
+        "ctfPoints": "1200.0000",
+        "ratingPoints": "1.925",
+        "url": "https://ctftime.org/event/3209"
+      },
+      {
+        "place": 141,
+        "event": "boroCTF 2026",
+        "ctfPoints": "9000.0000",
+        "ratingPoints": "12.274",
+        "url": "https://ctftime.org/event/3309"
       },
       {
         "place": 149,
