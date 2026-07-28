@@ -1,19 +1,15 @@
-# Overview
+# Tổng quan
 Bài này được mình chạy trên local và rất khó đối với mình vì quá trình phân tích và khai thác lỗ hổng tới khi lấy được FLAG ngoài sự hiểu biết của mình, mình phải sự dụng phần lớn sự trợ giúp của AI. Mặc dù vậy thì mình vẫn cảm thấy so good vì mình cũng được học được khá nhiều các cách thức khai thác mới ở trong bài này.
-# Analysis
-Bài chạy 4 dịch vụ bao gồm: eren-app, mikasa, web, interalbot
-FLAG2 mình được tìm tháy trong DB oracle ở dịch vụ eren-app, FLAG1 được tìm thấy trong cookie ở dịch vụ internalbot. Chỉ có một dịch vụ được public trên port 80 là service mikasa
-
-## Service mikasa
-Do service trên sử dụng java dể code, mình sẽ dùng bytecode viewer để đọc source. Trong đó, service sử dụng 2 endpoint là `/search` `/upload`.
-
+# Phân tích và hướng khai thác
+Bài chạy 4 dịch vụ bao gồm: eren-app, mikasa, web, interalbot \
+FLAG2 mình được tìm thấy trong DB oracle ở dịch vụ eren-app, FLAG1 được tìm thấy trong cookie ở dịch vụ internalbot. Chỉ có một dịch vụ được public trên port 80 là service mikasa
+Service mikasa:
+Do service trên sử dụng java dể code, mình sẽ dùng bytecode viewer để đọc source. Trong đó, service sử dụng 2 endpoint là `/search` `/upload`.\
 Endpoint /search : chức năng của endpoint này trả về bản ghi của username trong bảng user. input nhập vào sẽ được nối trực tiếp với query vậy nên sẽ có lỗ hổng SQL injection ở đây. 
 ![alt text](image.png)
+Mặc dù có SQL injection nhưng service cũng đã filter rất nhiều các syntax SQL bằng list các từ sau: ("master", "change", "information_schema", "sys", "ban", "rand", "char", "schema", "updatexml", "compress", "union", "mid", "sub", "html", "right", "left", "concat", "static", "name_const", "slave", "out", "start", "base64", "status", "py", "delete", "drop", "priv", "execute", "alter", "global", "immediate", "exec", "\\*", "file"). Flag cũng không nằm ở DB của service này.\
 
-mặc dù có SQL injection nhưng service cũng đã filter rất nhiều các syntax SQL bằng list các từ sau: ("master", "change", "information_schema", "sys", "ban", "rand", "char", "schema", "updatexml", "compress", "union", "mid", "sub", "html", "right", "left", "concat", "static", "name_const", "slave", "out", "start", "base64", "status", "py", "delete", "drop", "priv", "execute", "alter", "global", "immediate", "exec", "\\*", "file")
-. Flag cũng không nằm ở DB của service này.
-
-Endpoint /upload: chức năng của endpoint này sẽ upload file vào hệ thống lưu ở path /tmp/upload . Nó cũng filter các kí tự thực hiện path traversal như:"\\.\\.", "/", "\\\\", "%2e", "%2f", "%5c", "\u0000", "\\." và sử dụng hàm normalizeFileName(filename) để lấy từng byte trong bảng mã ISO-8859-1 trong tên file AND 127 trở thành dạng ASCII 7 bit. mặc dù vậy nhưng khi để filename là ¯ và ® khi qua hàm normalizeFileName(filename) sẽ được biến đổi thành / và . .Như vậy chúng ta có thể dùng ¯ và ® để thực hiện path traversal để ghi đè file upload vào những nơi nhạy cảm 
+Endpoint /upload: chức năng của endpoint này sẽ upload file vào hệ thống lưu ở path /tmp/upload . Nó cũng filter các kí tự thực hiện path traversal như:"\\.\\.", "/", "\\\\", "%2e", "%2f", "%5c", "\u0000", "\\." và sử dụng hàm normalizeFileName(filename) để lấy từng byte trong bảng mã ISO-8859-1 trong tên file AND 127 trở thành dạng ASCII 7 bit. mặc dù vậy nhưng khi để filename là ¯ và ® khi qua hàm normalizeFileName(filename) sẽ được biến đổi thành / và . .Như vậy chúng ta có thể dùng ¯ và ® để thực hiện path traversal để ghi đè file upload vào những nơi nhạy cảm. \
 
 Mình đã cố gắng tìm hiểu có thể từ việc upload file để dẫn tới khai thác lấy FLAG bên các dịch vụ eren và internal bot mà không thể. Đến bước này mình đã phải sử dụng phần lớn AI. Theo đó mình biết được một kiểu upload mới là upload file .so thay vì các loại file script phổ biến mà mình biết. Mục đích của việc upload file .so là để cắm vào plugin của mariaDB sau đó khai thác các thông tin cần thiết . Để ghi vào plugin_dir mình cần sử dụng lệnh INSTALL SONAME 'payload.so' trong /search vì nguồn có allowMultiQueries=true . Khi nạp sẽ service sẽ hiện thống báo vì plugin MariaDB không chuẩn nhưng trong file .so có  
 
@@ -26,9 +22,7 @@ static void init_payload(void) {
     _exit(0);
 }
 ```
-Constructor chạy ngay khi MariaDB load .so
-
-Trong file .so thực hiện các tác vụ sau: gọi curl đến http://eren-app:3000/api/faction/scan (do eren-app và mikasa cùng nằm trên mạng nội bộ, được biết trong file docker-compose.yml) . trong lệnh curl đó sẽ truyền vào query đến DB eren để lấy flag bằng Boolean-Based.  xong đó gửi qua FLAG qua webhook của mình. Xây dựng payload rồi sử dụng /search với ` aa';install soname 'payload.so';# `
+Constructor chạy ngay khi MariaDB load .so .Trong file .so thực hiện các tác vụ sau: gọi curl đến http://eren-app:3000/api/faction/scan (do eren-app và mikasa cùng nằm trên mạng nội bộ, được biết trong file docker-compose.yml) . trong lệnh curl đó sẽ truyền vào query đến DB eren để lấy flag bằng Boolean-Based.  xong đó gửi qua FLAG qua webhook của mình. Xây dựng payload rồi sử dụng /search với ` aa';install soname 'payload.so';# `
 
 ```c
 #include <stdio.h>
@@ -204,8 +198,8 @@ static void init_payload(void) {
 
 ![alt text](image-1.png)
 
-Để lấy được FLAG1 thì trong payload của mình cần thực hiện những cái sau: FLAG1 sẽ được lưu vào cookie của bot khi bot truy cập vào http://web:3000
-, mình sẽ khai thác lỗ hổng XSS chạy trong browser của bot bằn việc dùng document.cookie để đọc. Lỗ hổng gây ra XSS là hàm innerHTML tại postContent.innerHTML = post.post_content .
+Để lấy được FLAG1 thì trong payload của mình cần thực hiện những cái sau: FLAG1 sẽ được lưu vào cookie của bot khi bot truy cập vào http://web:3000, mình sẽ khai thác lỗ hổng XSS chạy trong browser của bot bằn việc dùng document.cookie để đọc. Lỗ hổng gây ra XSS là hàm innerHTML tại postContent.innerHTML = post.post_content .\
+
 Mình sẽ giải thích về quá trình con Bot thực hiện tác vụ: Bot sẽ nhận một chuỗi comment từ /visit sau đó bot mở http://web:3000 set cookie là flag, bấm nút submit với giá trị comment vừa lấy từ /visit. Nhưng front-end sẽ không gửi lên server luôn mà sẽ gọi WASM để xử lí.Frontend ghi sẵn chuỗi gameInfo vào vùng nhớ CONTENT_CACHE. Sau khi gọi game.wasm với userComment, frontend đọc lại chính vùng nhớ đó và dùng giá trị đọc được làm processed_post_content. Do userComment quá dài có thể ghi đè lên CONTENT_CACHE, mình có thể thay thế được nội dung gameInfo bằng HTML tùy ý. mốc offset tới vùng nhớ đó là 16368 . xây dựng payload rồi sử dụng /search với ` aa';install soname 'payload.so';# ` để kích hoạt. Dưới đây là kết quả trả về qua webhook:
 
 ```c

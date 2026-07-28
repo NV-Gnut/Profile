@@ -1,10 +1,10 @@
-# Challenge Overview
+# Tổng quan
 Name: Neon Mirage\
 Author: 0xV01D Team\
 Description: A support preview console tries to keep input harmless while still being useful to operators. Make the interface show what it was not meant to reveal.\
 Flag format: 0xV10D{...}\
 Objective: Nhập js expression đúng sẽ hiển thị FLAG
-# Solution Plan
+# Kế hoạch khai thác
 Trước hết cần hiểu js expression là gì ? . nó là một đoạn code js mà khi chạy sẽ tạo ra một giá trị
 1. Kiểm tra các kí tự như  `' " ; \ / > < ` bị block. Kiểm tra hàm có sẵn  thì có response chú ý là `the filter names dangerous functions, but JavaScript objects still remember who built them `
 2. Khi có thông tin đó ta sẽ hàm `constructor()` vẫn có thể thực thi. 

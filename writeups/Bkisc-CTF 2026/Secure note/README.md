@@ -1,9 +1,4 @@
----
-title: Overview
-
----
-
-# Overview
+# Tổng quan
 ![image](1.png)
 Nội dung trong source gồm:
 
@@ -12,7 +7,7 @@ Nội dung trong source gồm:
 > Mục tiêu: Đánh cắp Flag được bảo vệ tại endpoint /api/admin/data, endpoint này yêu cầu quyền Admin (chỉ có Bot mới có Session này).
 
 Chúng ta sẽ đi vào trong code để tìm hiểu cụ thể hơn
-# Analysis
+# Phân tích và hướng khai thác
 1. App.js
   Trong đoạn code `app.js` mình phát hiện tại endpoint `POST /api/note` Content của note  được lưu trữ trong cơ sở dữ liệu và hiển thị dữ liệu đó mà không qua bất cứ bộ lọc nào:
   ![image](2.png)
@@ -37,7 +32,7 @@ Khi 3 biến sau trả về True thì CSP sẽ được cập nhật mới làm 
  . Bot sẽ load url trong vòng tối đa 5s sau đó sẽ truy trì trang trong vòng 15s
  ![image](5.png)
 > Tóm lại: Chúng ta cần xử lí để cho trong vòng 15s Bot truy cập vào note chứa payload
-# Attack Scenario
+# Quá trình khai thác
 Vì bot không thể share note vì bot không phải owner của note. Vậy nên kịch bản sẽ như sau:
 
 - Attacker: tạo note chứa payload. Xây dựng trang exploi có hành vi tự động xảy ra khi bot truy cập vào trang web (chúng ta có thể tạo code và hosting bằng netlify)

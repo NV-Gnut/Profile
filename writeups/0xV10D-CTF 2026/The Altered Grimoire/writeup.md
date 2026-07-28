@@ -1,10 +1,10 @@
-# Challenge Overview
+# Tổng quan
 Name: The Altered Grimoire\
 Author: 0xV01D Team\
 Description: An old vault carries migration scars and a few too many trusted assumptions. Find the path that turns a normal account into something more.\
 Flag format: 0xV10D{...}\
 Objective: Tìm và đăng nhập tài khoản admin với role admin, sau đó truy cập vào path /admin.php để lấy flag
-# Solution Plan
+# Kế hoạch khai thác
 1. Truy cập vào một endpoint bất kì `/gnut ` ở phần `comment` trong source thấy path: `/thjslfgblkf/jdfj546j/kjfhgstnjkn4/users.txt`
  ```yaml
 <!--

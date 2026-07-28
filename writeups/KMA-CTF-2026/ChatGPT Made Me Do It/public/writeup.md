@@ -1,9 +1,9 @@
-# Challeange overview
+# Tổng quan
 Name: CHATGPT MADE ME DO IT
 Author: nigh7c0r3\
 Description: I asked ChatGPT for help, and it... well, you'll see.\
 Object: Khai thác lỗ hổng XSS để khôi phục password ADMIN
-# Analysis
+# Phân tích 
 Cấu trúc thư mục:
 ```text
 public/
@@ -68,7 +68,7 @@ Mình sủ dụng cơ chế thứ 2 để tiêm vào payload: `<!--><script>aler
 
 Thật tốt!!. Mình đã thực hiện bypass thành công và khai thác được lỗ hổng XSS qua /immortal-gate/check. Tiếp theo mình sẽ xây dựng kịch bản để lấy flag
 
-# Solution Plan
+# Kế hoạch khai thác
 1. Do bot được đăng nhập bằng account ADMIN vậy nên cần tạo payload truy cập vào /cultivation/password để thay đổi password. Payload cần đáp ứng có header x-csrf-token= csrf_token:
 ```js
 document.cookie='csrf_token=abc; path=/cultivation';
@@ -78,8 +78,7 @@ fetch('/cultivation/password',{
 })`
 ```
 
-2. Đầu tiên  sử dụng enpoint `/immortal-gate/report` để bot visit `http://localhost:3000/immortal-gate/check ` sau đó chèn thêm `?name=payload`
-. Sau khi gửi bot sẽ truy cập `http://localhost:3000/immortal-gate/check` và sẽ thực hiện đoạn payload js ngay tại request gốc để kèm cookie. Khi đó password của admin đã được đổi thành `rỗng`
+2. Đầu tiên  sử dụng enpoint `/immortal-gate/report` để bot visit `http://localhost:3000/immortal-gate/check ` sau đó chèn thêm `?name=payload`. Sau khi gửi bot sẽ truy cập `http://localhost:3000/immortal-gate/check` và sẽ thực hiện đoạn payload js ngay tại request gốc để kèm cookie. Khi đó password của admin đã được đổi thành `rỗng`
 3. Truy cập endpoint `/immortal-gate/treasure` với method POST và ta sẽ nhận được flag. 
 
 ![alt text](image-3.png)

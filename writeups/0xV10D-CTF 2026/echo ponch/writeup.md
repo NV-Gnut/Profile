@@ -1,6 +1,6 @@
-# Challenge Overview
+# Tổng quan
 Mục tiêu: Thực hiện khai thác lỗ hổng Path traversal để đọc nội dung file /etc/passwd sau đó giải mã đoạn comment để nhận Flag
-# Solution Plan
+# Kế hoạch khai thác
 1. Truy cập vào source mình phát hiện có endpoint dạng `?url=forms\`
 2. Trong index.php có hiện thị các thư mục forms\servers-status.txt ,.. . Qua đó mình xác định được endpoint đó sẽ thực hiện đọc nội dung của file => Lỗ hổng path traversal
 3. Thử `?url=forms/../../../../etc/passwd` => Response:  Not find file. Quay trở lại cái mô tả và hint tác giả đã cung cấp, nếu request được gửi từ một nguồn tin cậy thì response sẽ phản hồi khác

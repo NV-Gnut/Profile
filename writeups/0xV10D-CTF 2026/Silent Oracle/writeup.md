@@ -1,9 +1,9 @@
-# Challenge Overview
+# Tổng quan
 Name: Silent Oracle \
 Author: 0xV01D Team\
 Description: A quiet internal directory exposes only a small public surface. The useful answers are hidden behind how the service thinks about people and roles.\
 Objective: Khai thác lỗ hổng SQLi GraphQL Injection trong tham số users(search) của GraphQL để đọc cột secret bị ẩn trong bảng users và lấy flag.\
-# Solution Plan
+# Kế hoạch khai thác
 1. Trong tham số search ta chèn `' OR 1=1--` . Ta thấy kết quả trả về toàn bộ user
 ```json
  {
