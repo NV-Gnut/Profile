@@ -1,11 +1,7 @@
 {
   "teamId": 410831,
   "teamUrl": "https://ctftime.org/team/410831",
-<<<<<<< HEAD
-  "updatedAt": "2026-08-04T03:43:54.573021+00:00",
-=======
-  "updatedAt": "2026-08-03T16:39:04.766554+00:00",
->>>>>>> cd27454 (test)
+  "updatedAt": "2026-08-04T10:05:29.847250+00:00",
   "rankings": {
     "world": 279,
     "vietnam": 23
@@ -47,12 +43,8 @@
         "event": "L3akCTF 2026",
         "ctfPoints": "2278.0000",
         "ratingPoints": "7.919",
-<<<<<<< HEAD
-        "url": "https://ctftime.org/event/3061"
-=======
         "url": "https://ctftime.org/event/3061",
         "certificate": "assets/Cert/L3ak CTF 2026/cert_L3ak.png"
->>>>>>> cd27454 (test)
       },
       {
         "place": 79,
