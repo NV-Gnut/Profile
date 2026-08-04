@@ -16,6 +16,7 @@ const backLink = document.querySelector("#article-back");
 const kindConfig = {
   writeup: { label: "Writeup", panel: "ctf", back: "Back to writeups" },
   project: { label: "Project", panel: "projects", back: "Back to projects" },
+  lab: { label: "Lab", panel: "labs", back: "Back to labs" },
   blog: { label: "Blog", panel: "blogs", back: "Back to blogs" },
 };
 

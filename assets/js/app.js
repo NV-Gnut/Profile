@@ -11,6 +11,8 @@ const writeupGrid = document.querySelector("#writeup-grid");
 const writeupCount = document.querySelector("#writeup-count");
 const writeupSearch = document.querySelector("#writeup-search");
 const projectList = document.querySelector("#project-list");
+const labList = document.querySelector("#lab-list");
+const labCount = document.querySelector("#lab-count");
 const blogList = document.querySelector("#blog-list");
 const achievementRows = document.querySelector("#achievement-rows");
 const achievementTabs = document.querySelectorAll("[data-achievement-year]");
@@ -46,6 +48,7 @@ if (snowfall) {
 const titles = {
   ctf: "Writeups",
   projects: "Project",
+  labs: "Labs",
   blogs: "Blogs",
   team: "Our team",
 };
@@ -177,6 +180,7 @@ const articleHref = (item, kind) => {
   const metaByKind = {
     writeup: `${item.event} / ${item.category}`,
     project: `${item.type} / Project`,
+    lab: `${item.platform} / ${item.category} / Lab`,
     blog: `${item.category} / Blog`,
   };
   const query = new URLSearchParams();
@@ -372,6 +376,102 @@ const loadProjectManifest = async () => {
 
 loadProjectManifest();
 
+const normalizeClassName = (value) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+const renderCertificateLinks = (certificate) => {
+  if (!certificate) {
+    return "-";
+  }
+
+  const href = encodeURI(certificate);
+
+  return `
+    <div class="certificate-actions">
+      <a href="${href}" target="_blank" rel="noreferrer">View</a>
+    </div>
+  `;
+};
+
+const renderLabs = (items) => {
+  if (!labList) {
+    return;
+  }
+
+  if (labCount) {
+    labCount.textContent = String(items.length).padStart(2, "0");
+  }
+
+  if (!items.length) {
+    labList.innerHTML = `
+      <div class="lab-empty">
+        <strong>No labs published yet.</strong>
+      </div>
+    `;
+    return;
+  }
+
+  labList.innerHTML = items
+    .map((item) => {
+      const href = item.src ? articleHref(item, "lab") : item.url;
+      const externalAttributes =
+        item.url && !item.src ? ' target="_blank" rel="noreferrer"' : "";
+      const content = `
+        <div class="lab-meta">
+          <span>${item.platform}</span>
+          <span class="lab-difficulty ${normalizeClassName(item.difficulty)}">
+            ${item.difficulty}
+          </span>
+        </div>
+        <div class="lab-copy">
+          <p class="card-kicker">${item.category}</p>
+          <h4>${item.title}</h4>
+          <p>${item.description}</p>
+        </div>
+        <div class="lab-footer">
+          ${
+            item.status
+              ? `<span class="lab-status ${normalizeClassName(item.status)}">${item.status}</span>`
+              : ""
+          }
+          <div class="tag-list">
+            ${(item.tags || []).map((tag) => `<span>${tag}</span>`).join("")}
+          </div>
+        </div>
+      `;
+
+      return href
+        ? `<a class="lab-card" href="${href}"${externalAttributes}>${content}</a>`
+        : `<article class="lab-card">${content}</article>`;
+    })
+    .join("");
+};
+
+const loadLabManifest = async () => {
+  if (!labList) {
+    return;
+  }
+
+  try {
+    const response = await fetch("labs/manifest.json");
+
+    if (!response.ok) {
+      throw new Error("Cannot load labs/manifest.json");
+    }
+
+    renderLabs(await response.json());
+  } catch (error) {
+    labList.innerHTML = `<p class="load-error">Cannot load lab list.</p>`;
+    console.error(error);
+  }
+};
+
+loadLabManifest();
+
 const renderBlogs = (items) => {
   if (!blogList) {
     return;
@@ -434,7 +534,7 @@ const renderAchievements = (data, year = "2026") => {
   if (!rows.length) {
     achievementRows.innerHTML = `
       <tr>
-        <td colspan="3">No top 150 results for ${year} yet.</td>
+        <td colspan="4">No top 150 results for ${year} yet.</td>
       </tr>
     `;
     return;
@@ -453,6 +553,7 @@ const renderAchievements = (data, year = "2026") => {
             }
           </td>
           <td>${item.ratingPoints ?? "-"}</td>
+          <td>${renderCertificateLinks(item.certificate)}</td>
         </tr>
       `,
     )
@@ -501,7 +602,7 @@ const loadAchievements = async () => {
   } catch (error) {
     achievementRows.innerHTML = `
       <tr>
-        <td colspan="3">Cannot load CTFtime results.</td>
+        <td colspan="4">Cannot load CTFtime results.</td>
       </tr>
     `;
     console.error(error);

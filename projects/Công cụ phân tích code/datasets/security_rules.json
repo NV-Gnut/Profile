@@ -1,0 +1,60 @@
+[
+  {
+    "id": "DATA-PY-SSRF-001",
+    "name": "Server-side Request Forgery",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "cwe": "CWE-918",
+    "dataset_source": "CodeTrace Curated 2026.1",
+    "languages": ["python"],
+    "sources": [
+      "\\brequest\\.(args|form|json|query_params)\\b"
+    ],
+    "sinks": [
+      "\\b(requests\\.(get|post|put|delete)|urllib\\.request\\.urlopen|httpx\\.(get|post))\\s*\\("
+    ],
+    "sanitizers": [
+      "\\b(is_safe_url|validate_url|allowed_host)\\s*\\("
+    ],
+    "message": "URL do người dùng kiểm soát có thể được server truy cập.",
+    "recommendation": "Chuẩn hóa URL và chỉ cho phép scheme, host, port nằm trong allow-list."
+  },
+  {
+    "id": "DATA-PY-DESER-001",
+    "name": "Unsafe Pickle Deserialization",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "cwe": "CWE-502",
+    "dataset_source": "CodeTrace Curated 2026.1",
+    "languages": ["python"],
+    "sources": [
+      "\\b(request\\.(data|body|files)|base64\\.b64decode)\\b"
+    ],
+    "sinks": [
+      "\\b(pickle|dill)\\.loads?\\s*\\("
+    ],
+    "sanitizers": [],
+    "message": "Dữ liệu không tin cậy có thể được deserialization bằng Pickle/Dill.",
+    "recommendation": "Không deserialize Pickle từ nguồn không tin cậy; dùng JSON với schema validation."
+  },
+  {
+    "id": "DATA-PY-REDIRECT-001",
+    "name": "Unvalidated Redirect",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "cwe": "CWE-601",
+    "dataset_source": "CodeTrace Curated 2026.1",
+    "languages": ["python"],
+    "sources": [
+      "\\brequest\\.(args|query_params)\\b"
+    ],
+    "sinks": [
+      "\\b(redirect|RedirectResponse)\\s*\\("
+    ],
+    "sanitizers": [
+      "\\b(is_safe_url|validate_redirect|allowed_host)\\s*\\("
+    ],
+    "message": "Đích redirect có thể do người dùng kiểm soát.",
+    "recommendation": "Chỉ redirect tới đường dẫn nội bộ hoặc host nằm trong allow-list."
+  }
+]

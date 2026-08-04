@@ -14,6 +14,7 @@ YEARS = ("2026", "2025")
 MAX_PLACE = 150
 ROOT = Path(__file__).resolve().parents[1]
 OUT_PATH = ROOT / "data" / "ctftime-results.json"
+CERT_ROOT = ROOT / "assets" / "Cert"
 TEAM_URL = f"https://ctftime.org/team/{TEAM_ID}"
 
 
@@ -41,6 +42,40 @@ def parse_first_int(value: str) -> int | None:
 
 def clean_text(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip()
+
+
+def normalize_event_name(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", value.lower())
+
+
+def certificate_map() -> dict[str, str]:
+    if not CERT_ROOT.exists():
+        return {}
+
+    certificates: dict[str, str] = {}
+    for event_dir in CERT_ROOT.iterdir():
+        if not event_dir.is_dir():
+            continue
+
+        cert_file = next((path for path in event_dir.iterdir() if path.is_file()), None)
+        if cert_file is None:
+            continue
+
+        certificates[normalize_event_name(event_dir.name)] = cert_file.relative_to(ROOT).as_posix()
+
+    return certificates
+
+
+def attach_certificates(results: dict[str, list[dict[str, str | int]]]) -> None:
+    certificates = certificate_map()
+    if not certificates:
+        return
+
+    for rows in results.values():
+        for item in rows:
+            certificate = certificates.get(normalize_event_name(str(item["event"])))
+            if certificate:
+                item["certificate"] = certificate
 
 
 def find_year(value: str) -> str | None:
@@ -269,12 +304,15 @@ def parse_rankings(html: str) -> dict[str, int | None]:
 
 def main() -> None:
     html = fetch_team_page()
+    years = parse_results(html)
+    attach_certificates(years)
+
     data = {
         "teamId": TEAM_ID,
         "teamUrl": TEAM_URL,
         "updatedAt": datetime.now(timezone.utc).isoformat(),
         "rankings": parse_rankings(html),
-        "years": parse_results(html),
+        "years": years,
     }
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)

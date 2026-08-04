@@ -1,7 +1,11 @@
 {
   "teamId": 410831,
   "teamUrl": "https://ctftime.org/team/410831",
+<<<<<<< HEAD
   "updatedAt": "2026-08-04T03:43:54.573021+00:00",
+=======
+  "updatedAt": "2026-08-03T16:39:04.766554+00:00",
+>>>>>>> cd27454 (test)
   "rankings": {
     "world": 279,
     "vietnam": 23
@@ -20,14 +24,16 @@
         "event": "0xV01D CTF 2026",
         "ctfPoints": "6483.0000",
         "ratingPoints": "14.445",
-        "url": "https://ctftime.org/event/3269"
+        "url": "https://ctftime.org/event/3269",
+        "certificate": "assets/Cert/0xV01D CTF 2026/IMG_7162.jpg"
       },
       {
         "place": 27,
         "event": "V1T CTF 2026",
         "ctfPoints": "5502.0000",
         "ratingPoints": "11.023",
-        "url": "https://ctftime.org/event/3249"
+        "url": "https://ctftime.org/event/3249",
+        "certificate": "assets/Cert/V1T CTF 2026/027_Lighth0use_Writ3Gnut.png"
       },
       {
         "place": 29,
@@ -41,7 +47,12 @@
         "event": "L3akCTF 2026",
         "ctfPoints": "2278.0000",
         "ratingPoints": "7.919",
+<<<<<<< HEAD
         "url": "https://ctftime.org/event/3061"
+=======
+        "url": "https://ctftime.org/event/3061",
+        "certificate": "assets/Cert/L3ak CTF 2026/cert_L3ak.png"
+>>>>>>> cd27454 (test)
       },
       {
         "place": 79,

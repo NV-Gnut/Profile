@@ -54,5 +54,37 @@
     "category":"Web",
     "date":"2026-05-27",
     "src":"writeups/KMA-CTF-2026/thousandsoflightyears/writeup.md"
+  },
+  {
+    "title": "Gatery",
+    "event": "Cyber Apocalypse CTF 2026",
+    "eventKey": "cyber-apocalypse",
+    "category": "Web",
+    "date": "2026-07-29",
+    "src": "writeups/Cyber Apocalypse CTF 2026/Web/Gatery.md"
+  },
+  {
+    "title": "catvault - part 1",
+    "event": "L3akCTF 2026",
+    "eventKey": "l3ak",
+    "category": "Web",
+    "date": "2026-08-01",
+    "src": "writeups/L3ak-CTF 2026/catvault-part1/catvault - part 1.md"
+  },
+  {
+    "title": "Side Channel Surfer",
+    "event": "L3akCTF 2026",
+    "eventKey": "l3ak",
+    "category": "Web",
+    "date": "2026-08-04",
+    "src": "writeups/L3ak-CTF 2026/Side Channel Surfer/Side Channel Surfer.md"
+  },
+  {
+    "title": "Zebda",
+    "event": "L3akCTF 2026",
+    "eventKey": "l3ak",
+    "category": "Web",
+    "date": "2026-08-04",
+    "src": "writeups/L3ak-CTF 2026/Zebda/Zebda.md"
   }
 ]

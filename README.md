@@ -1,6 +1,6 @@
 # Learning Profile
 
-Static profile page for CTF write-ups, projects, blogs and team information. Markdown articles share a generated table of contents and enhanced code blocks.
+Static profile page for CTF write-ups, labs, projects, blogs and team information. Markdown articles share a generated table of contents and enhanced code blocks.
 
 ## Project structure
 
@@ -12,6 +12,7 @@ Static profile page for CTF write-ups, projects, blogs and team information. Mar
 |   `-- js/         # Main page and writeup scripts
 |-- data/           # Generated CTFtime data
 |-- blogs/          # Blog posts and blog manifest
+|-- labs/           # Hands-on labs and lab manifest
 |-- projects/       # Project manifest and source examples
 |-- scripts/        # Maintenance scripts
 |-- writeups/       # CTF writeups grouped by event
@@ -27,6 +28,7 @@ Static profile page for CTF write-ups, projects, blogs and team information. Mar
 - Edit tournament filter buttons with `data-event-filter`.
 - Put write-up Markdown files in `writeups/`, then add one entry to `writeups/manifest.json`.
 - Add project entries to `projects/manifest.json`.
+- Add lab entries to `labs/manifest.json`.
 - Add blog entries to `blogs/manifest.json`.
 - Edit the team name, copy or SVG logo inside `[data-panel-content="team"]`.
 
@@ -79,6 +81,26 @@ Add one object to `projects/manifest.json`:
 ```
 
 Use `src` to open project notes in the shared article reader. Leave `url` empty if the project does not have a public repository.
+
+## Add a lab
+
+Put the Markdown file in `labs/`, then add an entry to `labs/manifest.json`:
+
+```json
+{
+  "title": "My Lab",
+  "description": "Short lab summary.",
+  "platform": "Hack The Box",
+  "category": "Pwn",
+  "difficulty": "Easy",
+  "status": "Completed",
+  "tags": ["Linux", "Binary"],
+  "date": "2026-07-28",
+  "src": "labs/my-lab/README.md"
+}
+```
+
+Use `src` for lab notes in the shared article reader, or replace it with `url` to link to an external lab page.
 
 ## Add a blog
 
