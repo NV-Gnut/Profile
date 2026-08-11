@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "title": "Cap",
+    "platform": "Hack The Box",
+    "category": "Linux",
+    "difficulty": "Easy",
+    "description": "Khai thác IDOR để lấy PCAP chứa credential FTP, dùng lại mật khẩu qua SSH và leo thang đặc quyền bằng Linux capabilities.",
+    "date": "2026-08-08",
+    "status": "Completed",
+    "tags": ["IDOR", "PCAP", "FTP", "SSH", "Capabilities"],
+    "src": "labs/Cap/Cap.md",
+    "url": ""
+  },
+  {
+    "title": "Orion",
+    "platform": "Hack The Box",
+    "category": "Linux",
+    "difficulty": "Easy",
+    "description": "Khai thác Craft CMS RCE, thu thập credential từ môi trường ứng dụng và leo thang đặc quyền qua telnetd vulnerable.",
+    "date": "2026-08-11",
+    "status": "Completed",
+    "tags": ["Craft CMS", "RCE", "CSRF", "MySQL", "Telnetd"],
+    "src": "labs/Orion/Orion.md",
+    "url": ""
+  }
+]
