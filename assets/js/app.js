@@ -6,6 +6,7 @@ const profileToggle = document.querySelector(".profile-toggle");
 const profileClose = document.querySelector(".profile-close");
 const profileBackdrop = document.querySelector(".profile-backdrop");
 const cvPanel = document.querySelector("#cv-panel");
+const panelFrame = document.querySelector(".panel-frame");
 const filterContainer = document.querySelector("#tournament-filter");
 const writeupGrid = document.querySelector("#writeup-grid");
 const writeupCount = document.querySelector("#writeup-count");
@@ -19,35 +20,10 @@ const achievementTabs = document.querySelectorAll("[data-achievement-year]");
 const achievementUpdated = document.querySelector("#achievement-updated");
 const rankWorld = document.querySelector("#rank-world");
 const rankVietnam = document.querySelector("#rank-vietnam");
-const snowfall = document.querySelector("#snowfall");
-
-if (snowfall) {
-  const snowflakes = Array.from({ length: 52 }, (_, index) => {
-    const flake = document.createElement("span");
-    const position = (index * 37 + 11) % 100;
-    const size = 7 + ((index * 7) % 11);
-    const duration = 7 + ((index * 5) % 8);
-    const delay = -((index * 1.7) % duration);
-    const drift = -45 + ((index * 29) % 90);
-    const opacity = 0.58 + ((index * 13) % 38) / 100;
-
-    flake.className = "snowflake";
-    flake.textContent = index % 3 === 0 ? "❄" : "❅";
-    flake.style.setProperty("--snow-left", `${position}%`);
-    flake.style.setProperty("--snow-size", `${size}px`);
-    flake.style.setProperty("--snow-duration", `${duration}s`);
-    flake.style.setProperty("--snow-delay", `${delay}s`);
-    flake.style.setProperty("--snow-drift", `${drift}px`);
-    flake.style.setProperty("--snow-opacity", opacity);
-    return flake;
-  });
-
-  snowfall.replaceChildren(...snowflakes);
-}
 
 const titles = {
   ctf: "Writeups",
-  projects: "Project",
+  projects: "Projects",
   labs: "Labs",
   blogs: "Blogs",
   team: "Our team",
@@ -85,6 +61,9 @@ const switchPanel = async (button) => {
   }
 
   panelTransitionActive = true;
+  if (panelFrame) {
+    panelFrame.dataset.activePanel = panelName;
+  }
   const currentName = currentPanel?.dataset.panelContent;
   const direction = panelOrder.indexOf(panelName) > panelOrder.indexOf(currentName) ? 1 : -1;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
