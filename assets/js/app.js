@@ -185,36 +185,65 @@ const normalizeSearchText = (value) =>
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 
-const renderWriteupCards = (items, filter = "all", query = "") => {
-  if (!writeupGrid) {
+const groupWriteupsByEvent = (items) =>
+  [...items.reduce((groups, item) => {
+    if (!groups.has(item.eventKey)) {
+      groups.set(item.eventKey, {
+        eventKey: item.eventKey,
+        event: item.event,
+        items: [],
+      });
+    }
+
+    groups.get(item.eventKey).items.push(item);
+    return groups;
+  }, new Map()).values()];
+
+let activeWriteupEvent = null;
+let writeupItems = [];
+
+const renderWriteupNavigation = () => {
+  if (!filterContainer) {
     return;
   }
 
-  const normalizedQuery = normalizeSearchText(query.trim());
-  const visibleItems = items.filter((item) => {
-    const matchesFilter = filter === "all" || item.eventKey === filter;
-    const searchableText = normalizeSearchText(`${item.title} ${item.event}`);
-    return matchesFilter && (!normalizedQuery || searchableText.includes(normalizedQuery));
-  });
+  const activeGroup = groupWriteupsByEvent(writeupItems).find(
+    (group) => group.eventKey === activeWriteupEvent,
+  );
 
-  if (writeupCount) {
-    writeupCount.textContent = String(visibleItems.length).padStart(2, "0");
-  }
-
-  if (!visibleItems.length) {
-    writeupGrid.innerHTML = `
-      <div class="empty-search">
-        <strong>No matching writeups</strong>
-        <p>Try another title, event name, or filter.</p>
-      </div>
+  if (!activeGroup) {
+    filterContainer.innerHTML = `
+      <span class="writeup-view-label">
+        <strong>Competitions</strong>
+        <small>Select an event to view its challenges</small>
+      </span>
     `;
     return;
   }
 
-  writeupGrid.innerHTML = visibleItems
+  filterContainer.innerHTML = `
+    <button class="writeup-back" type="button">All competitions</button>
+    <span class="writeup-current-event">${activeGroup.event}</span>
+  `;
+
+  filterContainer.querySelector(".writeup-back")?.addEventListener("click", () => {
+    const previousEvent = activeWriteupEvent;
+    activeWriteupEvent = null;
+    writeupSearch.value = "";
+    writeupSearch.placeholder = "Search event or challenge...";
+    renderWriteupNavigation();
+    renderWriteups();
+    writeupGrid
+      ?.querySelector(`[data-event-key="${previousEvent}"]`)
+      ?.focus({ preventScroll: true });
+  });
+};
+
+const renderChallengeCards = (items) =>
+  items
     .map(
       (item) => `
-        <a class="writeup-card" href="${articleHref(item, "writeup")}" data-event="${item.eventKey}">
+        <a class="writeup-card challenge-card" href="${articleHref(item, "writeup")}" data-event="${item.eventKey}">
           <div class="writeup-meta">
             <span class="category ${categoryClass(item.category)}">${item.category}</span>
             <span>${item.event}</span>
@@ -225,43 +254,105 @@ const renderWriteupCards = (items, filter = "all", query = "") => {
       `,
     )
     .join("");
-};
 
-const renderWriteupFilters = (items) => {
-  if (!filterContainer) {
+const renderWriteups = () => {
+  if (!writeupGrid) {
     return;
   }
 
-  const events = [...new Map(items.map((item) => [item.eventKey, item.event])).entries()];
+  const normalizedQuery = normalizeSearchText(writeupSearch?.value.trim() || "");
 
-  filterContainer.innerHTML = [
-    `<button class="filter-chip active" data-event-filter="all" type="button">All</button>`,
-    ...events.map(
-      ([eventKey, event]) =>
-        `<button class="filter-chip" data-event-filter="${eventKey}" type="button">${event}</button>`,
-    ),
-  ].join("");
+  if (activeWriteupEvent) {
+    const visibleItems = writeupItems.filter((item) => {
+      const belongsToEvent = item.eventKey === activeWriteupEvent;
+      const searchableText = normalizeSearchText(`${item.title} ${item.category}`);
+      return belongsToEvent && (!normalizedQuery || searchableText.includes(normalizedQuery));
+    });
 
-  let activeFilter = "all";
+    if (writeupCount) {
+      writeupCount.textContent = String(visibleItems.length).padStart(2, "0");
+    }
 
-  const refreshWriteups = () => {
-    renderWriteupCards(items, activeFilter, writeupSearch?.value || "");
-  };
+    writeupGrid.innerHTML = visibleItems.length
+      ? renderChallengeCards(visibleItems)
+      : `
+          <div class="empty-search">
+            <strong>No matching challenges</strong>
+            <p>Try another challenge title or category.</p>
+          </div>
+        `;
+    return;
+  }
 
-  filterContainer.querySelectorAll("[data-event-filter]").forEach((button) => {
+  const visibleGroups = groupWriteupsByEvent(writeupItems)
+    .map((group) => {
+      const eventMatches = normalizeSearchText(group.event).includes(normalizedQuery);
+      const matchingItems = group.items.filter((item) =>
+        normalizeSearchText(`${item.title} ${item.category}`).includes(normalizedQuery),
+      );
+      return {
+        ...group,
+        visibleItems: !normalizedQuery || eventMatches ? group.items : matchingItems,
+      };
+    })
+    .filter((group) => group.visibleItems.length);
+
+  if (writeupCount) {
+    const visibleCount = visibleGroups.reduce((total, group) => total + group.visibleItems.length, 0);
+    writeupCount.textContent = String(visibleCount).padStart(2, "0");
+  }
+
+  if (!visibleGroups.length) {
+    writeupGrid.innerHTML = `
+      <div class="empty-search">
+        <strong>No matching competitions</strong>
+        <p>Try another event or challenge name.</p>
+      </div>
+    `;
+    return;
+  }
+
+  writeupGrid.innerHTML = visibleGroups
+    .map((group) => {
+      const categories = [...new Set(group.items.map((item) => item.category))];
+      const latestDate = [...group.items].sort((a, b) => b.date.localeCompare(a.date))[0]?.date;
+      const countLabel = `${group.items.length} writeup${group.items.length === 1 ? "" : "s"}`;
+
+      return `
+        <button class="writeup-card event-card" type="button" data-event-key="${group.eventKey}">
+          <div class="writeup-meta">
+            <span class="event-label">Competition</span>
+            <span>${countLabel}</span>
+          </div>
+          <h4>${group.event}</h4>
+          <div class="event-categories" aria-label="Categories">
+            ${categories
+              .map(
+                (category) =>
+                  `<span class="category ${categoryClass(category)}">${category}</span>`,
+              )
+              .join("")}
+          </div>
+          <span class="event-open">View challenges</span>
+          ${latestDate ? `<time datetime="${latestDate}">Updated ${formatDate(latestDate)}</time>` : ""}
+        </button>
+      `;
+    })
+    .join("");
+
+  writeupGrid.querySelectorAll("[data-event-key]").forEach((button) => {
     button.addEventListener("click", () => {
-      activeFilter = button.dataset.eventFilter;
-
-      filterContainer
-        .querySelectorAll("[data-event-filter]")
-        .forEach((item) => item.classList.remove("active"));
-      button.classList.add("active");
-      refreshWriteups();
+      activeWriteupEvent = button.dataset.eventKey;
+      writeupSearch.value = "";
+      writeupSearch.placeholder = `Search in ${button.querySelector("h4")?.textContent || "event"}...`;
+      renderWriteupNavigation();
+      renderWriteups();
+      filterContainer?.querySelector(".writeup-back")?.focus({ preventScroll: true });
     });
   });
-
-  writeupSearch?.addEventListener("input", refreshWriteups);
 };
+
+writeupSearch?.addEventListener("input", renderWriteups);
 
 const loadWriteupManifest = async () => {
   if (!filterContainer || !writeupGrid) {
@@ -275,9 +366,9 @@ const loadWriteupManifest = async () => {
       throw new Error("Cannot load writeups/manifest.json");
     }
 
-    const items = await response.json();
-    renderWriteupFilters(items);
-    renderWriteupCards(items);
+    writeupItems = await response.json();
+    renderWriteupNavigation();
+    renderWriteups();
   } catch (error) {
     writeupGrid.innerHTML = `<p class="load-error">Cannot load writeup list.</p>`;
     console.error(error);

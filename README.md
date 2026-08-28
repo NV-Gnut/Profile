@@ -62,7 +62,7 @@ https://<your-username>.github.io/<repository-name>/
 }
 ```
 
-You do not need to create a separate HTML file or hand-write a card. `assets/js/app.js` reads `writeups/manifest.json`, renders cards, and creates tournament filters automatically.
+You do not need to create a separate HTML file or hand-write a card. `assets/js/app.js` reads `writeups/manifest.json`, groups entries into competition cards, and opens the challenge list for the selected event automatically.
 
 ## Add a project
 
